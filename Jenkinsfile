@@ -8,13 +8,14 @@ pipeline {
     }
     stages {
         stage('Build') {
+
+            steps {
                 script {
                     // Use the Maven tool. Belt and bracers. We've already defined this tool, but the code below ensures that the PATH is correctly set.
                     // and so this is the version of Maven that is actually used.
                     def mvnHome = tool name: 'maven-default', type: 'maven'
                     env.PATH = "${mvnHome}/bin:${env.PATH}"
                 }
-            steps {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
