@@ -3,8 +3,17 @@ pipeline {
     options {
         skipStagesAfterUnstable()
     }
+    tools {
+        maven 'maven-default' // Name of the Maven installation configured in Jenkins that refers to my default local installation
+    }
     stages {
         stage('Build') {
+                script {
+                    // Use the Maven tool. Belt and bracers. We've already defined this tool, but the code below ensures that the PATH is correctly set.
+                    // and so this is the version of Maven that is actually used.
+                    def mvnHome = tool name: 'maven-default', type: 'maven'
+                    env.PATH = "${mvnHome}/bin:${env.PATH}"
+                }
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
